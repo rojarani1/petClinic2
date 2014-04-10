@@ -4,11 +4,11 @@
 <script type="text/javascript">
 	//adding a mention that the Help link goes no where so you don't think that
 	//it's broken
-	$(document).ready(function() {
-		$('#goesNoWhere').bind("click", function() {
-			alert("This link goes no where, not sure why they have it here...");
-		});
-	});
+	//$(document).ready(function() {
+		//$('#goesNoWhere').bind("click", function() {
+			//alert("This link goes no where, not sure why they have it here...");
+		//});
+	//});
 </script>
 
 <spring:url value="/resources/images/banner-graphic.png" var="banner"/>
@@ -31,10 +31,15 @@
                                      title="trigger a RuntimeException to see how it is handled">
          	<i class="glyphicon glyphicon-warning-sign"></i> Error</a>
          </li>
-         <li style="width: 80px;">
+         <!-- <li style="width: 80px;">
          	<a id="goesNoWhere" href="#" title="not available yet. Work in progress!!">
          		<i class=" glyphicon glyphicon-question-sign"></i> 
          		Help
+         	</a>
+         </li> -->
+         <li style="width: 100px;">
+         	<a id="logout" href="<spring:url value="/logout" htmlEscape="true" />"><i class="glyphicon glyphicon-log-out"></i> 
+         		Logout
          	</a>
          </li>
      </ul>
