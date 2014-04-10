@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.Ordered;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.DateFormatter;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -41,6 +43,12 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
 	@Inject
 	private List<Formatter<?>> formatters;
+
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/login").setViewName("login");
+		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+	}
 
 	@Bean
 	public ViewResolver viewResolver() {
