@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.home.petclinic2.common.HibernateAwareObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,9 +20,11 @@ import org.springframework.format.datetime.DateFormatter;
 import org.springframework.format.datetime.DateFormatterRegistrar;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -41,8 +44,24 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	private static final Logger logger = LoggerFactory
 			.getLogger(WebMvcConfig.class);
 
-	@Inject
+	// it may not be obvious but to get a bean that's been loaded via the
+	// @ComponentScan annotations you just @Inject or @Autowire them in. Just
+	// like below but you don't have to ask for everything of a specific type, I
+	// just like to make things automatic so I don't have to autowire them
+	// individually
+
+	// neat trick which grabs ALL Formatter objects in context and injects them
+	// into this list.They are in the context because they are annotated
+	// with @Component and they are within one of the @ComponentScan packages
+	// Just showing that autowiring and injecting do the same thing
+	@Autowired
 	private List<Formatter<?>> formatters;
+
+	// neat trick which grabs ALL HandlerInterceptors in context and injects
+	// them into this list. They are in the context because they are annotated
+	// with @Component and they are within one of the @ComponentScan packages
+	@Inject
+	private List<HandlerInterceptor> interceptors;
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
@@ -114,6 +133,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	public void addFormatters(FormatterRegistry registry) {
 		logger.info("Adding formatters");
 		for (Formatter<?> formatter : formatters) {
+			logger.info("Adding formatter: " + formatter);
 			registry.addFormatter(formatter);
 		}
 
@@ -122,7 +142,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		DateFormatterRegistrar registrar = new DateFormatterRegistrar();
 		registrar.setFormatter(new DateFormatter("MM/dd/yyyy"));
 		registrar.registerFormatters(registry);
-		logger.info("Added formatters: " + registry);
+		logger.info("Added formatters");
 	}
 
 	/**
@@ -139,6 +159,17 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		mappingJackson2HttpMessageConverter
 				.setObjectMapper(new HibernateAwareObjectMapper());
 		return mappingJackson2HttpMessageConverter;
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		logger.info("Adding interceptors");
+		for (HandlerInterceptor handlerInterceptor : interceptors) {
+			logger.info("Adding interceptor: " + handlerInterceptor);
+			registry.addInterceptor(handlerInterceptor);
+		}
+
+		logger.info("Added interceptors");
 	}
 
 }
