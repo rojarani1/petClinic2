@@ -5,14 +5,10 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -28,7 +24,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories("org.home.petclinic2.repository")
+@EnableJpaRepositories("**.repository")
+// TODO: not currently working. Going to wait for another Spring Data
+// JPA release before I try again
+// @EnableJpaAuditing
 @PropertySource("classpath:db.properties")
 public class DataConfig {
 
@@ -104,7 +103,8 @@ public class DataConfig {
 				.getObject());
 		return transactionManager;
 	}
-	
+
+	// TODO: Need to figure out how to run this once
 	// @Bean
 	// @DependsOn("entityManagerFactory")
 	// public ResourceDatabasePopulator initDatabase(DataSource dataSource)
@@ -114,5 +114,12 @@ public class DataConfig {
 	// populator.populate(dataSource.getConnection());
 	// return populator;
 	// }
+
+	//@Bean
+	//public AuditorAware<String> auditorAware() {
+		// TODO: not currently working. Going to wait for another Spring Data
+		// JPA release before I try again
+		//return new AuditorAwareSpringSecurityImpl();
+	//}
 
 }
