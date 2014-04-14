@@ -5,7 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.home.petclinic2.domain.User;
-import org.home.petclinic2.repository.UserRepository;
+import org.home.petclinic2.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,7 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/signup")
 public class SignupController {
 	@Autowired
-	private UserRepository userRepository;
+	private UserDetailsService userDetailsService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String signupForm(@ModelAttribute User user) {
@@ -43,7 +43,7 @@ public class SignupController {
 		if (result.hasErrors()) {
 			return "user/signup";
 		}
-		user = userRepository.save(user);
+		user = userDetailsService.save(user);
 		// not sure what this is doing
 		// redirect.addFlashAttribute("globalMessage",
 		// "Successfully signed up");
