@@ -16,7 +16,26 @@
 	<div class="container">
 		<form:form modelAttribute="user">
 			<petclinic:inputField label="Email (user name)" name="email"/>
-			<petclinic:inputField label="Password" name="password"/>
+			
+			<!-- TODO: Add javascript to validate in real time with bootstrap 3 -->
+			<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
+   			<div class="${cssGroup}">
+   				<form:label path="password" class="control-label">Password</form:label>
+   				<div class="controls">
+       				<form:password path="password"/>
+       				<span class="help-inline">${status.errorMessage}</span>
+   				</div>
+   			</div>
+			
+   			<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
+   			<div class="${cssGroup}">
+   				<label for="passwordConfirm" class="control-label">Confirm password</label>
+   				<div class="controls">
+       				<input id="passwordConfirm" type="password"/>
+       				<span class="help-inline">${status.errorMessage}</span>
+   				</div>
+   			</div>
+
 			<petclinic:inputField label="First Name" name="firstName"/>
 	        <petclinic:inputField label="Last Name" name="lastName"/>
 	        <petclinic:inputField label="Address Line 1" name="address.addressLine1"/>
