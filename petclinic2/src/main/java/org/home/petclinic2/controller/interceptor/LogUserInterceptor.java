@@ -3,13 +3,13 @@ package org.home.petclinic2.controller.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.home.petclinic2.service.UserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,6 +31,9 @@ public class LogUserInterceptor implements HandlerInterceptor {
 	private static final Logger logger = LoggerFactory
 			.getLogger(LogUserInterceptor.class);
 
+	@Autowired
+	private UserDetailsService userDetailsService;
+
 	@Override
 	public void afterCompletion(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex)
@@ -49,22 +52,18 @@ public class LogUserInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-		// using spring security, get the user logged in and add them to the
-		// logger MDC
+		UserDetails userDetails = userDetailsService.getCurrentUser();
 
-		// get user name
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		
 		// debugging to see what we got from the spring security context holder
 		logger.debug("Spring's SecurityContextHolder.getContext() returned: "
-				+ auth);
-		
-		String userName = auth.getName();
+				+ userDetails);
 
-		// if user name not in request nor session, default to Unknown
-		if (StringUtils.isEmpty(userName)) {
-			userName = "Unknown";
+		String userName = null;
+		if (userDetails == null) {
+			// default to Anonymous
+			userName = "Anonymous";
+		} else {
+			userName = userDetails.getUsername();
 		}
 
 		// add user name to MDC before performing actions
