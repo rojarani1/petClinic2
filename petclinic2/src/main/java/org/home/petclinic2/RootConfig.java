@@ -2,7 +2,6 @@ package org.home.petclinic2;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 /**
  * Initializes services (control) layer
@@ -11,10 +10,10 @@ import org.springframework.context.annotation.Profile;
  * 
  */
 @Configuration
-// wiring in services as well as formatters and validators simply because I
+// wiring in services as well as formatters, validators, etc... simply because I
 // haven't found a better way of wiring formatters nor validators in
-@ComponentScan({ "org.home.petclinic2.service",
-		"org.home.petclinic2.validator", "org.home.petclinic2.formatter" })
+@ComponentScan({ "**.service", "**.validator", "**.formatter", "**.resolver",
+		"**.interceptor" })
 public class RootConfig {
 
 }
