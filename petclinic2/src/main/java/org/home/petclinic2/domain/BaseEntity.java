@@ -15,10 +15,22 @@
  */
 package org.home.petclinic2.domain;
 
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * Simple JavaBean domain object with an id property. Used as a base class for
@@ -30,10 +42,29 @@ import javax.persistence.MappedSuperclass;
 // The @MappedSuperClass only means that this class will not have a table and
 // that classes which inherit from this class will have these columns
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
+
+	@CreatedBy
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn
+	private User createdBy;
+
+	@CreatedDate
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime createdDate;
+
+	@LastModifiedBy
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn
+	private User lastModifiedBy;
+
+	@LastModifiedDate
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime lastModifiedDate;
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -45,6 +76,38 @@ public class BaseEntity {
 
 	public boolean isNew() {
 		return (this.id == null);
+	}
+
+	public User getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public DateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(DateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public User getLastModifiedBy() {
+		return lastModifiedBy;
+	}
+
+	public void setLastModifiedBy(User lastModifiedBy) {
+		this.lastModifiedBy = lastModifiedBy;
+	}
+
+	public DateTime getLastModifiedDate() {
+		return lastModifiedDate;
+	}
+
+	public void setLastModifiedDate(DateTime lastModifiedDate) {
+		this.lastModifiedDate = lastModifiedDate;
 	}
 
 }

@@ -43,10 +43,4 @@ public class MyUserDetails extends User implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-
-	public org.springframework.security.core.userdetails.User getUser() {
-		org.springframework.security.core.userdetails.User ssUser = new org.springframework.security.core.userdetails.User(
-				getUsername(), getPassword(), getAuthorities());
-		return ssUser;
-	}
 }

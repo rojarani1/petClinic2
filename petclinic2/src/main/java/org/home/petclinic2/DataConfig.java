@@ -3,10 +3,14 @@ package org.home.petclinic2;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
+import org.home.petclinic2.domain.User;
+import org.home.petclinic2.repository.auditor.AuditorAwareSpringSecurityImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -25,9 +29,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories("**.repository")
-// TODO: not currently working. Going to wait for another Spring Data
-// JPA release before I try again
-// @EnableJpaAuditing
+@EnableJpaAuditing
 @PropertySource("classpath:db.properties")
 public class DataConfig {
 
@@ -115,11 +117,9 @@ public class DataConfig {
 	// return populator;
 	// }
 
-	//@Bean
-	//public AuditorAware<String> auditorAware() {
-		// TODO: not currently working. Going to wait for another Spring Data
-		// JPA release before I try again
-		//return new AuditorAwareSpringSecurityImpl();
-	//}
+	@Bean
+	public AuditorAware<User> auditorAware() {
+		return new AuditorAwareSpringSecurityImpl();
+	}
 
 }
