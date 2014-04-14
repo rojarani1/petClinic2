@@ -114,7 +114,8 @@ public class ClinicServiceImpl implements ClinicService {
 		// environments though I've only ever had 1 set at a time
 		// String activeEnv = env.getActiveProfiles()[0];
 		// if (activeEnv.equals("local")) {
-		if (true) {
+		// TODO: convert to data.sql
+		if (false) {
 			// load pet types if there aren't any
 			if (petTypeRepository.findAll().isEmpty()) {
 				// using a linked hashset so the order is retained
