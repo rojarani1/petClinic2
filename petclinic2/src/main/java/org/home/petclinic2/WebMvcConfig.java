@@ -1,10 +1,12 @@
 package org.home.petclinic2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.home.petclinic2.common.HibernateAwareObjectMapper;
+import org.home.petclinic2.controller.exception.resolver.EmailSupportSimpleMappingExceptionResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +65,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	@Inject
 	private List<HandlerInterceptor> interceptors;
 
+	@Autowired
+	private EmailSupportSimpleMappingExceptionResolver exceptionResolver;
+
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/login").setViewName("login");
@@ -93,12 +98,17 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
 		logger.info("Creating simple mapping exception resolver (where to take users when an exception/warning occurs)");
-		SimpleMappingExceptionResolver simpleMappingExceptionResolver = new SimpleMappingExceptionResolver();
-		simpleMappingExceptionResolver.setDefaultErrorView("exception");
-		simpleMappingExceptionResolver.setWarnLogCategory("warn");
-		logger.info("Created simple mapping exception resolver (where to take users when an exception/warning occurs). Simple Mapping exception resolver: "
-				+ simpleMappingExceptionResolver);
-		return simpleMappingExceptionResolver;
+		exceptionResolver.setDefaultErrorView("exception");
+		exceptionResolver.setWarnLogCategory("error");
+
+		// TODO: this should be done with a properties entry
+		List<String> supportEmailAddresses = new ArrayList<String>();
+		supportEmailAddresses.add("phillip.williams@kyfb.com");
+		exceptionResolver.setSupportEmailAddresses(supportEmailAddresses);
+
+		logger.info("Created email support simple mapping exception resolver (view to show users when an exception/warning occurs). Exception resolver: "
+				+ exceptionResolver);
+		return exceptionResolver;
 	}
 
 	@Override
