@@ -1,4 +1,4 @@
 petClinic2
 ==========
 
-Pet Clinic using Spring 4, Spring Data JPA, and JSP heavily refactored and documented (with lots of my opinion but not necessarily correct)
+Based on my petClinic2-spring-security branch, I'm now going to make the app pretty with bootstrap 3
