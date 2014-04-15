@@ -10,6 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+/**
+ * Exception resolve which extends the SimpleMappingExceptionResolver by sending
+ * an email to support when exceptions occur
+ * 
+ * @author phil
+ * 
+ */
 @Component
 public class EmailSupportSimpleMappingExceptionResolver extends
 		SimpleMappingExceptionResolver {
@@ -17,6 +24,9 @@ public class EmailSupportSimpleMappingExceptionResolver extends
 	@Autowired
 	private EmailService emailService;
 
+	// haven't fully worked out how this is to be wired up but I've created the
+	// appropriate getter/setters to do so. I think the best method may be to
+	// build it from a properties file in the WebMvcConfig class
 	private List<String> supportEmailAddresses;
 
 	/**
@@ -49,6 +59,14 @@ public class EmailSupportSimpleMappingExceptionResolver extends
 		}
 	}
 
+	/**
+	 * Logs the exception the logger using the super's impl and then sends an
+	 * email to support
+	 * <p>
+	 * There are several methods I could have appended this functionality to but
+	 * this one made the most sense since we are logging the exception to the
+	 * log files
+	 */
 	@Override
 	protected void logException(Exception ex, HttpServletRequest request) {
 		// log the exception to the log file just like normally in

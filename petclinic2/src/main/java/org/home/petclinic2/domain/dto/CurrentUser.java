@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.home.petclinic2.domain;
+package org.home.petclinic2.domain.dto;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -26,6 +26,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 
 /**
+ * I haven't started using this yet but it is shorthand for retrieving the
+ * principle from the spring security context
+ * 
  * Annotate Spring MVC method arguments with this annotation to indicate you
  * wish to specify the argument with the value of the current
  * {@link Authentication#getPrincipal()} found on the

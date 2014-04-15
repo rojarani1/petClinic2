@@ -56,11 +56,17 @@ public class PetTypeFormatter implements Formatter<PetType> {
 	@Autowired
 	private ClinicService clinicService;
 
+	/**
+	 * Converts PetType entity to a string
+	 */
 	@Override
 	public String print(PetType petType, Locale locale) {
 		return petType.getName();
 	}
 
+	/**
+	 * Converts a String back into a PetType
+	 */
 	@Override
 	public PetType parse(String text, Locale locale) throws ParseException {
 		Collection<PetType> findPetTypes = clinicService.findPetTypes();

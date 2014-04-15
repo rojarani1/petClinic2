@@ -31,6 +31,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 /**
  * Initializes spring Configuration for Spring Data and our {@link DataSource}.
+ * <p>
+ * Just keeping this here for now, it looks to be a little more cleaner than my
+ * DataConfig class, but I think it only works with Embedded DB's
  * 
  * @author Rob Winch
  * 

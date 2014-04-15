@@ -34,6 +34,9 @@ public class LogUserInterceptor implements HandlerInterceptor {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
+	/**
+	 * Nothing implemented
+	 */
 	@Override
 	public void afterCompletion(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex)
@@ -41,6 +44,12 @@ public class LogUserInterceptor implements HandlerInterceptor {
 		// do nothing
 	}
 
+	/**
+	 * Removes the user name from the MDC
+	 * <p>
+	 * We are done processing the user's request so we can remove the user's
+	 * user name form the MDC
+	 */
 	@Override
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler,
@@ -49,6 +58,16 @@ public class LogUserInterceptor implements HandlerInterceptor {
 		MDC.remove("userName");
 	}
 
+	/**
+	 * Adds user name to the MDC
+	 * <p>
+	 * We are about to process a user's request so we add the user's user name
+	 * to the MDC so that it shows up in log statements.
+	 * <p>
+	 * Defaults to 'Unknown' when we don't know who the user is, could be an
+	 * anonymous user (user not authenticated visiting one of our unsecured
+	 * sections of the website)
+	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
@@ -60,8 +79,8 @@ public class LogUserInterceptor implements HandlerInterceptor {
 
 		String userName = null;
 		if (userDetails == null) {
-			// default to Anonymous
-			userName = "Anonymous";
+			// default to Unknown
+			userName = "Unknown";
 		} else {
 			userName = userDetails.getUsername();
 		}

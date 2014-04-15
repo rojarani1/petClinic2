@@ -25,7 +25,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
+	/**
+	 * Registers a method security handler
+	 * <p>
+	 * This allows us to secure methods within the application so that only
+	 * specific roles can access them
+	 * 
+	 * @author phil
+	 * 
+	 */
 	@Configuration
+	// the enable global method security allows for us to secure methods within
+	// classes requiring that the current user have specific roles
 	@EnableGlobalMethodSecurity(prePostEnabled = true)
 	static class MethodSecurityConfiguration extends
 			GlobalMethodSecurityConfiguration {
@@ -40,8 +51,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		}
 	}
 
+	/**
+	 * Configures spring security
+	 * <p>
+	 * We're defining which URL's are accessible for those that aren't
+	 * authenticated (e.g. the signup page and resources folder), we are also
+	 * stating that any other requests require authentication. Finally, we are
+	 * defining the login page signature and that we will allow all users to
+	 * access the log out location
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		// I am a big fan of using ctrl+shift+f which is an eclispe short cut
+		// that formats your code consistently. Sometimes, however, the
+		// formatting gets in the way and formats code that looks better the
+		//way we originally wrote it. By using @formatter:off and on we can 
+		//tell eclipse to leave certain portions of our code alone. 
+		//See: http://stackoverflow.com/questions/1820908/how-to-turn-off-the-eclipse-code-formatter-for-certain-sections-of-java-code 
 		// @formatter:off
 		 http
          	.authorizeRequests()
@@ -57,13 +83,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// @formatter:on
 	}
 
+	/**
+	 * Defining user details service impl
+	 * <p>
+	 * Spring security retains the authenticated user details within the
+	 * authentication's principle. It leaves what we actually store in the
+	 * principle (user details) up to us. This portion of the spring security
+	 * config is our way of defining what we store in the principle
+	 * 
+	 * @param auth
+	 * @throws Exception
+	 */
 	@Autowired
 	public void registerAuthentication(AuthenticationManagerBuilder auth)
 			throws Exception {
-		// @formatter:off
-		auth
-			.userDetailsService(userDetailsService);
-        // @formatter:on
+		auth.userDetailsService(userDetailsService);
 	}
 
 }

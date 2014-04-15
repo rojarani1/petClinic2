@@ -34,7 +34,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * Simple JavaBean domain object with an id property. Used as a base class for
- * objects needing this property.
+ * objects needing this property. Also, enables Spring Data JPA auditing
+ * recording the creator/editor and the created/edited timestamp
  * 
  * @author Ken Krebs
  * @author Juergen Hoeller

@@ -7,6 +7,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * User Details impl
+ * <p>
+ * Spring security allows us to configure what is stored in the spring security
+ * authentication context, this is typically user details and this is our
+ * implementation
+ * 
+ * @author phil
+ * 
+ */
 @SuppressWarnings("serial")
 public class MyUserDetails extends User implements UserDetails {
 

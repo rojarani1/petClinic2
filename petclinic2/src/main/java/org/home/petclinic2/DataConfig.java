@@ -27,9 +27,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * 
  */
 @Configuration
+// enables @Transaction annotations
 @EnableTransactionManagement
 @EnableJpaRepositories("**.repository")
+// enables spring data jpa auditing
 @EnableJpaAuditing
+// loads database properties file
 @PropertySource("classpath:db.properties")
 public class DataConfig {
 
@@ -42,9 +45,15 @@ public class DataConfig {
 	private static final String PROPERTY_NAME_HIBERNATE_GENERATE_DDL = "hibernate.hbm2ddl.auto";
 	private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
 
+	// pulls in profile
 	@Resource
 	private Environment env;
 
+	/**
+	 * Creates a datasource (interface to database)
+	 * 
+	 * @return
+	 */
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -60,6 +69,13 @@ public class DataConfig {
 		return dataSource;
 	}
 
+	/**
+	 * EntityManagerFactory
+	 * <p>
+	 * Entity managers oversee lifecycle of entities that are persisted
+	 * 
+	 * @return
+	 */
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -73,6 +89,11 @@ public class DataConfig {
 		return entityManagerFactoryBean;
 	}
 
+	/**
+	 * Hibernate specific configuration
+	 * 
+	 * @return
+	 */
 	@Bean
 	public JpaVendorAdapter jpaVendorAdapter() {
 		HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
@@ -98,6 +119,11 @@ public class DataConfig {
 	// return properties;
 	// }
 
+	/**
+	 * Transaction manager
+	 * 
+	 * @return
+	 */
 	@Bean
 	public JpaTransactionManager transactionManager() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -117,6 +143,12 @@ public class DataConfig {
 	// return populator;
 	// }
 
+	/**
+	 * Auditor bean responsible for resolving the current user when
+	 * creations/updates are made to entities
+	 * 
+	 * @return
+	 */
 	@Bean
 	public AuditorAware<User> auditorAware() {
 		return new AuditorAwareSpringSecurityImpl();

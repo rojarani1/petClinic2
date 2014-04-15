@@ -13,11 +13,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * UserDetailsService impl
+ * <p>
+ * Somewhat of a hybrid of a plain UserService and UserDetailsService, I'm still
+ * trying to mesh the 2 concepts
+ * 
+ * @author phil
+ * 
+ */
 @Service
-public class UserServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(UserServiceImpl.class);
+			.getLogger(UserDetailsServiceImpl.class);
 
 	private static final String SYSTEM_USER = "system.account@noWhere.com";
 

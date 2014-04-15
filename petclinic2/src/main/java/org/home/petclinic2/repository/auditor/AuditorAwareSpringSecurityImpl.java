@@ -11,6 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * Spring Data JPA auditor aware impl which uses Spring Security to resolve
  * current user
  * <p>
+ * When an entity is created or updated we want to put on the database who did
+ * the creation or update, this class takes care of that by retrieving the user
+ * name from the Spring Security context
+ * <p>
  * See:
  * http://blog.countableset.ch/2014/03/08/auditing-spring-data-jpa-java-config/
  */

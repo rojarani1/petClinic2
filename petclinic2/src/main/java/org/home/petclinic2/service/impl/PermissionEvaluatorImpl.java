@@ -21,6 +21,15 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+/**
+ * Permission evaluator impl
+ * <p>
+ * When a user is trying to do something (call a method) that we have secured
+ * this service checks that the user has permission
+ * 
+ * @author phil
+ * 
+ */
 @Component
 public class PermissionEvaluatorImpl implements PermissionEvaluator {
 

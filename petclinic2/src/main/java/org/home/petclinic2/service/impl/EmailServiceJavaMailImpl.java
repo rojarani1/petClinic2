@@ -21,6 +21,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+/**
+ * Email service JavaMail implementation
+ * 
+ * @author phil
+ * 
+ */
 @Service
 public class EmailServiceJavaMailImpl implements EmailService {
 	private static final Logger logger = LoggerFactory

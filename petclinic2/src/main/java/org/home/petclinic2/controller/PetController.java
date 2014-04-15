@@ -58,10 +58,9 @@ public class PetController {
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		logger.info("Init binding owner controller");
-		// dataBinder.setDisallowedFields("id");
-		// Just showing you how to bind validators. For some reason the example
-		// did not bind this validator. My guess is that they didn't want the
-		// validator logic ran for every @Valid call
+		dataBinder.setDisallowedFields("id");
+		// Just showing you how to bind validators. This example does the
+		// validation manually
 		// dataBinder.addValidators(petValidator);
 	}
 
@@ -147,8 +146,8 @@ public class PetController {
 		Owner owner = clinicService.findOwnerById(ownerId);
 		pet.setOwner(owner);
 
-		// we're not using @Valid annotation here because it is easier to define
-		// such validation rule in Java
+		// not sure why we aren't using @Valid annotation here but it is a good
+		// example of how to manually do validation
 		petValidator.validate(pet, result);
 		if (result.hasErrors()) {
 			return "pet/pet";
@@ -189,8 +188,8 @@ public class PetController {
 			@ModelAttribute("pet") Pet pet, BindingResult result) {
 		Owner owner = clinicService.findOwnerById(ownerId);
 		pet.setOwner(owner);
-		// we're not using @Valid annotation here because it is easier to define
-		// such validation rule in Java
+		// not sure why we aren't using @Valid annotation here but it is a good
+		// example of how to manually do validation
 		petValidator.validate(pet, result);
 		if (result.hasErrors()) {
 			return "pet/pet";
