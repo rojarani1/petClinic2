@@ -1,7 +1,9 @@
 package org.home.petclinic2;
 
+import org.home.petclinic2.service.UserDetailsService;
 import org.home.petclinic2.service.impl.PermissionEvaluatorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
@@ -11,7 +13,8 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Spring Security config
@@ -84,20 +87,47 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	/**
-	 * Defining user details service impl
+	 * Build authentication manager
 	 * <p>
 	 * Spring security retains the authenticated user details within the
 	 * authentication's principle. It leaves what we actually store in the
 	 * principle (user details) up to us. This portion of the spring security
 	 * config is our way of defining what we store in the principle
+	 * <p>
+	 * Without defining a password encoder, passwords will be stored as plain
+	 * text, using BCrypt password encoder based on the recommendation from
+	 * spring security's reference documentation
 	 * 
-	 * @param auth
+	 * @param authenticationManagerBuilder
 	 * @throws Exception
 	 */
 	@Autowired
-	public void registerAuthentication(AuthenticationManagerBuilder auth)
+	public void registerAuthentication(
+			AuthenticationManagerBuilder authenticationManagerBuilder)
 			throws Exception {
-		auth.userDetailsService(userDetailsService);
+		// @formatter:off
+		authenticationManagerBuilder
+			.userDetailsService(userDetailsService)
+			.passwordEncoder(passwordEncoder());
+		// @formatter:on
+	}
+
+	/**
+	 * Define passwordEncoder
+	 * <p>
+	 * Spring Security doesn't provide a means for adding new users so we have
+	 * to use our own implementation of UserDetailsService to do so. I'm
+	 * creating the password encoder as a separate bean so that it can be
+	 * autowired there, and stored encoded
+	 * 
+	 * @return
+	 */
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		// using bcrypt because spring suggested it in their reference manual
+		// and because it stores the salt used to encode the password along with
+		// the password which is less work for me
+		return new BCryptPasswordEncoder();
 	}
 
 }

@@ -1,2 +1,2 @@
 INSERT INTO USER
-VALUES (0, {ts '2014-04-14 00:00:00.000'}, {ts '2014-04-14 00:00:00.000'}, 'SYSTEM', 'ACCOUNT', '5555555555', 'system.account@noWhere.com', '12345', 0, 0, NULL);
+VALUES (0, {ts '2014-04-14 00:00:00.000'}, {ts '2014-04-14 00:00:00.000'}, 'SYSTEM', 'ACCOUNT', '5555555555', 'system.account@noWhere.com', '$2a$10$6G.q0mfir/XssyufklL1/OPw515pPYeqbfSAu1lyLTeIsPWtXFLby', 0, 0, NULL);

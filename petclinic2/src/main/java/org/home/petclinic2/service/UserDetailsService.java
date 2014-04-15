@@ -36,7 +36,9 @@ public interface UserDetailsService extends
 	public User getSystemUser();
 
 	/**
-	 * Saves a user (creation or update)
+	 * Saves a user (creation or update). Is also responsible for getting the
+	 * same password encoder user by the authenticationManager to save the
+	 * password in the same format
 	 * <p>
 	 * This may need to be split to prevent users from trying to sign up with an
 	 * account that already exists

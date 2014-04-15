@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,6 +25,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserDetailsServiceImpl.class);
@@ -76,6 +80,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public User save(User user) {
+		// encoding the password using the same password encoder that our
+		// authentication manager is using. This bean should be created in the
+		// SecurityConfig and wired in using the AuthenicationManagerBuilder
+		String rawPassword = user.getPassword();
+		String encodedPassword = passwordEncoder.encode(rawPassword);
+		user.setPassword(encodedPassword);
 		return userRepository.save(user);
 	}
+
 }
